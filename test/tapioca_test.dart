@@ -43,7 +43,7 @@ void main() {
   test('writeVideofile', () async {
     final tapiocaBalls = [
       TapiocaBall.filter(Filters.pink),
-      TapiocaBall.textOverlay("text", 10, 10,100, Color(0xFFffffff)),
+      TapiocaBall.textOverlay("text", 10, 10,100, Color(0xFFffffff), Color(0x00000000),
       TapiocaBall.imageOverlay(Uint8List(10), 10, 10),
     ];
     final cup = Cup(Content(path), tapiocaBalls);

@@ -79,6 +79,7 @@ public class VideoGeneratorService: VideoGeneratorServiceInterface {
           let x = value["x"] as? NSNumber,
           let y = value["y"] as? NSNumber,
           let textSize = value["size"] as? NSNumber,
+          let background=value["background"] as? String,
           let color = value["color"] as? String else {
             print("not found text overlay")
             result(FlutterError(code: "processing_data_invalid",
@@ -86,9 +87,9 @@ public class VideoGeneratorService: VideoGeneratorServiceInterface {
               details: nil))
             return
           }
-          let textOverlay = TextOverlay(text: text, x: x, y: y, size: textSize, color: color)
+          let textOverlay = TextOverlay(text: text, x: x, y: y, size: textSize, color: color,background: background)
           let titleLayer = CALayer()
-          let uiImage = imageWith(name: textOverlay.text, width: size.width, height: size.width, size: textOverlay.size.intValue, color: UIColor(hex:textOverlay.color.replacingOccurrences(of: "#", with: "")))
+          let uiImage = imageWith(name: textOverlay.text, width: size.width, height: size.width, size: textOverlay.size.intValue, color: UIColor(hex:textOverlay.color.replacingOccurrences(of: "#", with: "")),background: UIColor(hex:textOverlay.background.replacingOccurrences(of: "#", with: "")))
           titleLayer.contents = uiImage?.cgImage
           print(uiImage?.size)
           titleLayer.frame = CGRect(x: CGFloat(textOverlay.x.intValue), y: size.height - CGFloat(textOverlay.y.intValue) - uiImage!.size.height,
@@ -168,9 +169,9 @@ public class VideoGeneratorService: VideoGeneratorServiceInterface {
         assetExport.outputURL = movieDestinationUrl
         assetExport.exportAsynchronously(completionHandler:{
          switch assetExport.status{
-           case  AVAssetExportSessionStatus.failed:
+         case  AVAssetExportSession.Status.failed:
            print("failed \(assetExport.error)")
-           case AVAssetExportSessionStatus.cancelled:
+         case AVAssetExportSession.Status.cancelled:
            print("cancelled \(assetExport.error)")
            default:
            print("Movie complete")
@@ -179,11 +180,11 @@ public class VideoGeneratorService: VideoGeneratorServiceInterface {
          }
          })
       }
-      private func imageWith(name: String, width: CGFloat, height: CGFloat, size: Int, color: UIColor) -> UIImage? {
+      private func imageWith(name: String, width: CGFloat, height: CGFloat, size: Int, color: UIColor,background:UIColor) -> UIImage? {
         let frame = CGRect(x: 0, y: 0, width: width, height: CGFloat(size))
         let nameLabel = UILabel(frame: frame)
         nameLabel.textAlignment = .left
-        nameLabel.backgroundColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0)
+        nameLabel.backgroundColor = background
         nameLabel.textColor = color
         nameLabel.font = UIFont.boldSystemFont(ofSize: CGFloat(size))
         nameLabel.text = name
@@ -226,4 +227,5 @@ public class VideoGeneratorService: VideoGeneratorServiceInterface {
     let y: NSNumber
     let size: NSNumber
     let color: String
+    let background: String
   }

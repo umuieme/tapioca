@@ -1,5 +1,5 @@
 import "dart:typed_data";
-import "dart:ui";
+
 
 /// TapiocaBall is a effect to apply to the video.
 abstract class TapiocaBall {
@@ -14,8 +14,8 @@ abstract class TapiocaBall {
   }
 
   /// Creates a object to overlay text.
-  static TapiocaBall textOverlay(String text, int x, int y, int size, Color color) {
-    return _TextOverlay(text, x, y, size, color);
+  static TapiocaBall textOverlay(String text, int x, int y, int size, Color color,Color background) {
+    return _TextOverlay(text, x, y, size, color,background);
   }
 
   /// Creates a object to overlay a image.
@@ -38,30 +38,30 @@ enum Filters {
 }
 
 class _Filter extends TapiocaBall {
- String color;
- _Filter(Filters type) {
-   switch (type) {
-     case Filters.pink:
-      this.color = "#ffc0cb";
-      break;
-     case Filters.white:
-       this.color = "#ffffff";
-       break;
-     case Filters.blue:
-       this.color = "#1f8eed";
-   }
- }
- _Filter.color(Color colorInstance) {
-   this.color = '#${colorInstance.value.toRadixString(16).substring(2)}';
- }
+  String color;
+  _Filter(Filters type) {
+    switch (type) {
+      case Filters.pink:
+        this.color = "#ffc0cb";
+        break;
+      case Filters.white:
+        this.color = "#ffffff";
+        break;
+      case Filters.blue:
+        this.color = "#1f8eed";
+    }
+  }
+  _Filter.color(Color colorInstance) {
+    this.color = '#${colorInstance.value.toRadixString(16).substring(2)}';
+  }
 
- Map<String, dynamic> toMap() {
-   return {'type': color };
- }
+  Map<String, dynamic> toMap() {
+    return {'type': color };
+  }
 
- String toTypeName() {
-   return 'Filter';
- }
+  String toTypeName() {
+    return 'Filter';
+  }
 }
 
 class _TextOverlay extends TapiocaBall {
@@ -70,10 +70,11 @@ class _TextOverlay extends TapiocaBall {
   final int y;
   final int size;
   final Color color;
-  _TextOverlay(this.text, this.x, this.y, this.size, this.color);
+  final Color background;
+  _TextOverlay(this.text, this.x, this.y, this.size, this.color,this.background);
 
   Map<String, dynamic> toMap() {
-    return {'text': text, 'x': x, 'y': y, 'size': size, 'color': '#${color.value.toRadixString(16).substring(2)}' };
+    return {'text': text, 'x': x, 'y': y, 'size': size, 'color': '#${color.value.toRadixString(16).substring(2)}','background': '#${background.value.toRadixString(16).substring(2)}' };
   }
 
   String toTypeName() {
