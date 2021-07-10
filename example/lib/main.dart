@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
@@ -11,8 +10,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:tapioca/tapioca.dart';
 import 'package:tapioca_example/video_player_screen.dart';
+import 'package:tapioca_example/video_trimmer/video_speed_screen.dart';
 import 'package:tapioca_example/video_trimmer/video_trim_screen.dart';
-import 'package:video_player/video_player.dart';
 
 void main() => runApp(MyApp());
 
@@ -52,11 +51,11 @@ class _MyAppState extends State<MyApp> {
 
   void _processVideo() async {
     try {
-      print("clicked!");
-      navigatorKey.currentState
-          ?.push(MaterialPageRoute(builder: (_) => VideoScreen(_video!.path)));
-      return;
-      // await _pickVideo();
+      // print("clicked!");
+      // navigatorKey.currentState
+      //     ?.push(MaterialPageRoute(builder: (_) => VideoScreen(_video!.path)));
+      // return;
+      await _pickVideo();
       var tempDir = await getTemporaryDirectory();
       final path = '${tempDir.path}/result.mp4';
       print(tempDir);
@@ -122,6 +121,8 @@ class _MyAppState extends State<MyApp> {
     return a;
   }
 
+  void onTrimPressed() {}
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -149,14 +150,21 @@ class _MyAppState extends State<MyApp> {
                         textColor: Colors.white,
                         onPressed: _processVideo,
                       ),
-                      ElevatedButton(onPressed: (){
-                        navigatorKey.currentState?.push(
-                            MaterialPageRoute(builder: (_) => VideoTrimScreen()));
-                      }, child: Text("Trim video"))
+                      ElevatedButton(
+                          onPressed: () {
+                            navigatorKey.currentState?.push(MaterialPageRoute(
+                                builder: (_) => VideoTrimScreen()));
+                          },
+                          child: Text("Trim video")),
+                      ElevatedButton(
+                          onPressed: () {
+                            navigatorKey.currentState?.push(MaterialPageRoute(
+                                builder: (_) => VideoSpeedScreen()));
+                          },
+                          child: Text("Speed video"))
                     ],
                   )),
       ),
     );
   }
 }
-

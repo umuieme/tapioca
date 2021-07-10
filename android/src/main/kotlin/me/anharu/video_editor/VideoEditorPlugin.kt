@@ -2,6 +2,7 @@ package me.anharu.video_editor
 
 import android.Manifest
 import android.app.Activity
+import android.util.Log
 import androidx.annotation.NonNull
 import androidx.core.app.ActivityCompat
 import com.daasuu.mp4compose.composer.Mp4Composer
@@ -104,7 +105,7 @@ public class VideoEditorPlugin : FlutterPlugin, MethodCallHandler, PluginRegistr
                     return
                 }
                 val speed: Float = call.argument<Double>("speed")?.toFloat() ?: 0F
-               print("===>$speed");
+               Log.e("Videoeditor","===>$speed");
                 SpeedChanger(srcFilePath, destFilePath, result, getActivity).speed(speed)
             }
             else -> {

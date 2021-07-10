@@ -22,14 +22,16 @@ class _VideoAppState extends State<VideoScreen> {
   @override
   void initState() {
     super.initState();
-   initialize();
+    initialize();
   }
+
   initialize() async {
     try {
       _controller = VideoPlayerController.file(File(path));
       await _controller.initialize();
+      print("total duration -====== ${_controller.value.duration.inSeconds}");
       setState(() {});
-    } catch(error){
+    } catch (error) {
       print(error);
     }
   }
