@@ -35,7 +35,7 @@ class SpeedChanger(inputVideo: String, outputVideo: String, val result: Result, 
                         override fun onFailed(exception: Exception) {
                             exception.printStackTrace()
                             activity.runOnUiThread(Runnable {
-                                result.error("video_trim_failed", exception.message, exception.stackTrace)
+                                result.error("video_trim_failed", exception.message, null)
                             })
                         }
 
@@ -44,7 +44,7 @@ class SpeedChanger(inputVideo: String, outputVideo: String, val result: Result, 
             print("Error ====== ${e.message}")
             e.printStackTrace()
             activity.runOnUiThread(Runnable {
-                result.error("video_trim_failed", e.message, e.stackTrace)
+                result.error("video_trim_failed", e.message, null)
             })
         }
     }

@@ -5,8 +5,11 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:tapioca/tapioca.dart';
+import 'package:tapioca_example/capture_video_screen.dart';
 import 'package:tapioca_example/video_player_screen.dart';
 import 'package:video_player/video_player.dart';
+
+enum VideoPickType { CAMERA, GALLERY }
 
 class VideoSpeedScreen extends StatefulWidget {
   @override
@@ -14,7 +17,7 @@ class VideoSpeedScreen extends StatefulWidget {
 }
 
 class _VideoSpeedScreenState extends State<VideoSpeedScreen> {
-  PickedFile? _video;
+  String? _video;
   bool isLoading = false;
   bool isVideEditProcessing = false;
   VideoPlayerController? _controller;
@@ -32,7 +35,7 @@ class _VideoSpeedScreenState extends State<VideoSpeedScreen> {
       await file.writeAsBytes(byteData.buffer
           .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
 
-      _video = PickedFile(file.path);
+      _video = file.path;
       initializeVideo();
     } on Exception catch (e) {
       print(e.toString());
@@ -41,17 +44,51 @@ class _VideoSpeedScreenState extends State<VideoSpeedScreen> {
 
   initializeVideo() async {
     if (_video == null) return;
-    _controller = VideoPlayerController.file(File(_video!.path));
+    _controller = VideoPlayerController.file(File(_video!));
     await _controller!.initialize();
     // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
     _controller?.play();
     setState(() {});
-    print("output video  ==== ${_controller!.value.duration.inSeconds}");
+    print(
+        "output video  ==== ${_controller!.value.duration.inSeconds} == ${_controller!.value.size}");
   }
 
   _onVideoSelectPressed() async {
-    await _pickVideo();
-    await initializeVideo();
+
+    var result = await showDialog(
+        context: context,
+        builder: (_) => Dialog(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  InkWell(
+                      onTap: () =>
+                          Navigator.pop(context, VideoPickType.CAMERA),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text("Pick from gallery"),
+                      )),
+                  InkWell(
+                      onTap: () => Navigator.pop(context, VideoPickType.CAMERA),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text("Capture from camera"),
+                      ))
+                ],
+              ),
+            ));
+    if (result == VideoPickType.GALLERY) {
+      await _pickVideo();
+      await initializeVideo();
+    } else if (result == VideoPickType.CAMERA) {
+      var result = await Navigator.push(
+          context, MaterialPageRoute(builder: (_) => VideoCaptureScreen()));
+      if (result != null && result is String) {
+        _video = result;
+        await initializeVideo();
+      }
+    }
   }
 
   _pickVideo() async {
@@ -60,7 +97,7 @@ class _VideoSpeedScreenState extends State<VideoSpeedScreen> {
           await ImagePicker().getVideo(source: ImageSource.gallery);
       if (video == null) return;
       print("videopath: ${video.path}");
-      _video = video;
+      _video = video.path;
       isLoading = true;
       setState(() {});
     } catch (error) {
@@ -75,9 +112,9 @@ class _VideoSpeedScreenState extends State<VideoSpeedScreen> {
       });
       var tempDir = await getTemporaryDirectory();
       final path = '${tempDir.path}/result.mp4';
-      print("outputpath === $path === ${_video!.path}");
+      print("outputpath === $path === ${_video!}");
       // await VideoEditor.onTrimVideo(_video!.path, path, startPos, endPos);
-      await VideoEditor.speed(_video!.path, path, 10);
+      await VideoEditor.speed(_video!, path, 3);
       print("outputpath after === $path");
       setState(() {
         isVideEditProcessing = false;
@@ -104,10 +141,10 @@ class _VideoSpeedScreenState extends State<VideoSpeedScreen> {
                 icon: Icon(Icons.ondemand_video)),
             isVideEditProcessing
                 ? Center(
-                  child: CircularProgressIndicator(
+                    child: CircularProgressIndicator(
                       color: Colors.white,
                     ),
-                )
+                  )
                 : IconButton(
                     onPressed: this.onDonePressed, icon: Icon(Icons.done))
           ],
