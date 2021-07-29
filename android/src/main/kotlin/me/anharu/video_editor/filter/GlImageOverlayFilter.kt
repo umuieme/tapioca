@@ -11,7 +11,7 @@ class GlImageOverlayFilter(imageOverlay: ImageOverlay) : GlOverlayFilter() {
 
     protected override fun drawCanvas(canvas: Canvas) {
         var b = BitmapFactory.decodeByteArray (imageOverlay.bitmap, 0, imageOverlay.bitmap.size)
-        var bitmap= Bitmap.createScaledBitmap(b, b.width/3, b.height/3, false);
+        var bitmap= Bitmap.createScaledBitmap(b, b.width/10, b.height/10, false);
         canvas.drawBitmap(bitmap, imageOverlay.x.toFloat(), imageOverlay.y.toFloat(), null);
           }
 }
