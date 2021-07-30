@@ -107,6 +107,7 @@ public class VideoGeneratorService: VideoGeneratorServiceInterface {
           let imageOverlay = ImageOverlay(bitmap: bitmap.data, x: x, y: y)
           let datos: Data = imageOverlay.bitmap
           let image = UIImage(data: datos)
+        
           let imglayer = CALayer()
           imglayer.contents = image?.cgImage
           guard let imageWidth: CGFloat = image?.size.width else {
@@ -179,6 +180,8 @@ public class VideoGeneratorService: VideoGeneratorServiceInterface {
          }
          })
       }
+
+     
       private func imageWith(name: String, width: CGFloat, height: CGFloat, size: Int, color: UIColor) -> UIImage? {
         let frame = CGRect(x: 0, y: 0, width: width, height: CGFloat(size))
         let nameLabel = UILabel(frame: frame)

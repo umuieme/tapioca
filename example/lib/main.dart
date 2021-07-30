@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:tapioca/tapioca.dart';
 import 'package:tapioca_example/video_player_screen.dart';
+import 'package:tapioca_example/video_trimmer/textscreen.dart';
 import 'package:tapioca_example/video_trimmer/video_speed_screen.dart';
 import 'package:tapioca_example/video_trimmer/video_trim_screen.dart';
 
@@ -161,7 +162,13 @@ class _MyAppState extends State<MyApp> {
                             navigatorKey.currentState?.push(MaterialPageRoute(
                                 builder: (_) => VideoSpeedScreen()));
                           },
-                          child: Text("Speed video"))
+                          child: Text("Speed video")),
+                      ElevatedButton(
+                          onPressed: () {
+                            navigatorKey.currentState?.push(MaterialPageRoute(
+                                builder: (_) => TextScreen()));
+                          },
+                          child: Text("TextScreen")),
                     ],
                   )),
       ),

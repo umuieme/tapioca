@@ -19,6 +19,8 @@ PODS:
     - Flutter
   - tapioca (0.0.1):
     - Flutter
+  - video_compress (0.3.0):
+    - Flutter
   - video_player (0.0.1):
     - Flutter
   - video_thumbnail (0.0.1):
@@ -32,6 +34,7 @@ DEPENDENCIES:
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - tapioca (from `.symlinks/plugins/tapioca/ios`)
+  - video_compress (from `.symlinks/plugins/video_compress/ios`)
   - video_player (from `.symlinks/plugins/video_player/ios`)
   - video_thumbnail (from `.symlinks/plugins/video_thumbnail/ios`)
 
@@ -52,6 +55,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider/ios"
   tapioca:
     :path: ".symlinks/plugins/tapioca/ios"
+  video_compress:
+    :path: ".symlinks/plugins/video_compress/ios"
   video_player:
     :path: ".symlinks/plugins/video_player/ios"
   video_thumbnail:
@@ -65,6 +70,7 @@ SPEC CHECKSUMS:
   libwebp: e90b9c01d99205d03b6bb8f2c8c415e5a4ef66f0
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   tapioca: 59e9fc89671d49e2cefe6cd59c3efe678e589e89
+  video_compress: fce97e4fb1dfd88175aa07d2ffc8a2f297f87fbe
   video_player: 9cc823b1d9da7e8427ee591e8438bfbcde500e6e
   video_thumbnail: c4e2a3c539e247d4de13cd545344fd2d26ffafd1
 
