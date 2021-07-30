@@ -110,18 +110,8 @@ public class VideoGeneratorService: VideoGeneratorServiceInterface {
         
           let imglayer = CALayer()
           imglayer.contents = image?.cgImage
-          guard let imageWidth: CGFloat = image?.size.width else {
-            result(FlutterError(code: "video_processing_failed",
-              message: "video processing is failed.",
-              details: nil))
-            return
-          }
-          guard let imageHeight: CGFloat = image?.size.height else {
-            result(FlutterError(code: "video_processing_failed",
-              message: "video processing is failed.",
-              details: nil))
-            return
-          }
+           let imageWidth: CGFloat = image!.size.width/2
+           let imageHeight: CGFloat = image!.size.height/2
           imglayer.frame = CGRect(x:CGFloat(imageOverlay.x.intValue), y: size.height - CGFloat(imageOverlay.y.intValue) - imageHeight, width: imageWidth, height: imageHeight)
           imglayer.opacity = 1
           filters.append(imglayer)
