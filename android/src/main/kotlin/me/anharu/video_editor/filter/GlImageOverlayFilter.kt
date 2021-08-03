@@ -36,13 +36,13 @@ class GlImageOverlayFilter(imageOverlay: ImageOverlay) : GlOverlayFilter() {
     fun getResizedBitmap(bm: Bitmap, newHeight: Int, newWidth: Int): Bitmap {
         val width = bm.width
         val height = bm.height
-        val scaleWidth = newHeight.toFloat() / width
+        val scaleWidth = newWidth.toFloat() / width
         val scaleHeight = newHeight.toFloat() / height
         // create a matrix for the manipulation
         val matrix = Matrix()
         // resize the bit map
         matrix.postScale(scaleWidth, scaleHeight)
         // recreate the new Bitmap
-        return Bitmap.createBitmap(bm, 0, 0, width, height, matrix, true)
+        return Bitmap.createBitmap(bm, 0, 0, newWidth, newHeight, matrix, true)
     }
 }
