@@ -3,6 +3,16 @@ package me.anharu.video_editor.filter
 import android.graphics.*
 import com.daasuu.mp4compose.filter.GlOverlayFilter
 import me.anharu.video_editor.ImageOverlay
+import android.graphics.Bitmap
+
+import android.R.attr.src
+
+import android.graphics.BitmapFactory
+
+import android.R.attr.bitmap
+
+
+
 
 
 class GlImageOverlayFilter(imageOverlay: ImageOverlay) : GlOverlayFilter() {
@@ -10,9 +20,9 @@ class GlImageOverlayFilter(imageOverlay: ImageOverlay) : GlOverlayFilter() {
 
     protected override fun drawCanvas(canvas: Canvas) {
         var b = BitmapFactory.decodeByteArray (imageOverlay.bitmap, 0, imageOverlay.bitmap.size)
-        var bitmap= getResizedBitmap(b, b.height/2, b.width/2)
+        var bitmap= getResizedBitmap(b, b.height/10, b.width/10)
         //    Bitmap.createScaledBitmap(b, b.width/2, b.height/2, true);
-        canvas.drawBitmap(bitmap, imageOverlay.x.toFloat(), imageOverlay.y.toFloat(), android.graphics.Paint(2));
+        canvas.drawBitmap(bitmap, imageOverlay.x.toFloat(), imageOverlay.y.toFloat(), null);
     }
     fun scaleBitmap(bitmap: Bitmap, wantedWidth: Int, wantedHeight: Int): Bitmap {
         val output = Bitmap.createBitmap(wantedWidth, wantedHeight, Bitmap.Config.ARGB_8888)
@@ -26,7 +36,7 @@ class GlImageOverlayFilter(imageOverlay: ImageOverlay) : GlOverlayFilter() {
     fun getResizedBitmap(bm: Bitmap, newHeight: Int, newWidth: Int): Bitmap {
         val width = bm.width
         val height = bm.height
-        val scaleWidth = newWidth.toFloat() / width
+        val scaleWidth = newHeight.toFloat() / width
         val scaleHeight = newHeight.toFloat() / height
         // create a matrix for the manipulation
         val matrix = Matrix()
