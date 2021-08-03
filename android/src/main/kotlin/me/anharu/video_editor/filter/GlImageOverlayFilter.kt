@@ -56,7 +56,7 @@ class GlImageOverlayFilter(imageOverlay: ImageOverlay) : GlOverlayFilter() {
         return  dd;
 
     }
-    fun scaleBitmap(bitmap: Bitmap, wantedWidth: Int, wantedHeight: Int): Bitmap? {
+    fun scaleBitmap(bitmap: Bitmap, wantedWidth: Int, wantedHeight: Int): Bitmap {
         val originalWidth = bitmap.width.toFloat()
         val originalHeight = bitmap.height.toFloat()
         val output = Bitmap.createBitmap(wantedWidth, wantedHeight, Bitmap.Config.ARGB_8888)
