@@ -5,11 +5,15 @@ import com.daasuu.mp4compose.filter.GlOverlayFilter
 import me.anharu.video_editor.ImageOverlay
 import android.graphics.Bitmap
 
-import android.R.attr.src
-
 import android.graphics.BitmapFactory
 
-import android.R.attr.bitmap
+
+import java.io.ByteArrayOutputStream
+
+
+
+
+
 
 
 
@@ -19,12 +23,14 @@ class GlImageOverlayFilter(imageOverlay: ImageOverlay) : GlOverlayFilter() {
     private val imageOverlay: ImageOverlay = imageOverlay;
 
     protected override fun drawCanvas(canvas: Canvas) {
+
         var b = BitmapFactory.decodeByteArray (imageOverlay.bitmap, 0, imageOverlay.bitmap.size)
-        var bitmap= getResizedBitmap(b, b.height/10, b.width/10)
+        var bitmap= scaleBitmap(b, b.width/2, b.height/2)
         //    Bitmap.createScaledBitmap(b, b.width/2, b.height/2, true);
-        canvas.drawBitmap(bitmap, imageOverlay.x.toFloat(), imageOverlay.y.toFloat(), null);
+        canvas.drawBitmap(bitmap, imageOverlay.x.toFloat(), imageOverlay.y.toFloat(),null);
+
     }
-    fun scaleBitmap(bitmap: Bitmap, wantedWidth: Int, wantedHeight: Int): Bitmap {
+    fun scaleBitmaps(bitmap: Bitmap, wantedWidth: Int, wantedHeight: Int): Bitmap {
         val output = Bitmap.createBitmap(wantedWidth, wantedHeight, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(output)
         val m = Matrix()
@@ -42,7 +48,30 @@ class GlImageOverlayFilter(imageOverlay: ImageOverlay) : GlOverlayFilter() {
         val matrix = Matrix()
         // resize the bit map
         matrix.postScale(scaleWidth, scaleHeight)
+
         // recreate the new Bitmap
-        return Bitmap.createBitmap(bm, 0, 0, newWidth, newHeight, matrix, true)
+        var dd= Bitmap.createBitmap(bm, 0, 0, width, height, matrix, true)
+        var outputStream = ByteArrayOutputStream()
+        dd.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+        return  dd;
+
+    }
+    fun scaleBitmap(bitmap: Bitmap, wantedWidth: Int, wantedHeight: Int): Bitmap? {
+        val originalWidth = bitmap.width.toFloat()
+        val originalHeight = bitmap.height.toFloat()
+        val output = Bitmap.createBitmap(wantedWidth, wantedHeight, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(output)
+        val m = Matrix()
+        val scalex = wantedWidth / originalWidth
+        val scaley = wantedHeight / originalHeight
+        val xTranslation = 0.0f
+        val yTranslation = (wantedHeight - originalHeight * scaley) / 2.0f
+        m.postTranslate(xTranslation, yTranslation)
+        m.preScale(scalex, scaley)
+        // m.setScale((float) wantedWidth / bitmap.getWidth(), (float) wantedHeight / bitmap.getHeight());
+        val paint = Paint()
+        paint.isFilterBitmap = true
+        canvas.drawBitmap(bitmap, m, paint)
+        return output
     }
 }
