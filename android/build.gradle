@@ -48,4 +48,5 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.github.umuieme:Mp4Composer-android:buffer_size_fix-SNAPSHOT'
     implementation 'com.android.support:support-v4:28.0.0'
+
 }

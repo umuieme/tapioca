@@ -10,25 +10,14 @@ import android.graphics.BitmapFactory
 
 import java.io.ByteArrayOutputStream
 
-
-
-
-
-
-
-
-
-
 class GlImageOverlayFilter(imageOverlay: ImageOverlay) : GlOverlayFilter() {
     private val imageOverlay: ImageOverlay = imageOverlay;
 
     protected override fun drawCanvas(canvas: Canvas) {
-
         var b = BitmapFactory.decodeByteArray (imageOverlay.bitmap, 0, imageOverlay.bitmap.size)
-        var bitmap= scaleBitmap(b, b.width/2, b.height/2)
-        //    Bitmap.createScaledBitmap(b, b.width/2, b.height/2, true);
-        canvas.drawBitmap(bitmap, imageOverlay.x.toFloat(), imageOverlay.y.toFloat(),null);
-
+        var bitmap= getResizedBitmap(b, b.height/2,b.width/2)
+         //   Bitmap.createScaledBitmap(b, b.width/2, b.height/2, true);
+        canvas.drawBitmap(b, imageOverlay.x.toFloat(), imageOverlay.y.toFloat(), null);
     }
     fun scaleBitmaps(bitmap: Bitmap, wantedWidth: Int, wantedHeight: Int): Bitmap {
         val output = Bitmap.createBitmap(wantedWidth, wantedHeight, Bitmap.Config.ARGB_8888)
@@ -64,9 +53,9 @@ class GlImageOverlayFilter(imageOverlay: ImageOverlay) : GlOverlayFilter() {
         val m = Matrix()
         val scalex = wantedWidth / originalWidth
         val scaley = wantedHeight / originalHeight
-        val xTranslation = 0.0f
-        val yTranslation = (wantedHeight - originalHeight * scaley) / 2.0f
-        m.postTranslate(xTranslation, yTranslation)
+//        val xTranslation = 0.0f
+//        val yTranslation = (wantedHeight - originalHeight * scaley) / 2.0f
+//        m.postTranslate(xTranslation, yTranslation)
         m.preScale(scalex, scaley)
         // m.setScale((float) wantedWidth / bitmap.getWidth(), (float) wantedHeight / bitmap.getHeight());
         val paint = Paint()
