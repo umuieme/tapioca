@@ -8,31 +8,43 @@ class VideoTrimmer(inputVideo: String, outputVideo: String, val result: Result, 
     var composer: Mp4Composer = Mp4Composer(inputVideo, outputVideo)
 
     fun trimVideo(startTime: Long = 0, endTime: Long = -1) {
-        composer.trim(startTime, endTime)
-                .listener(object : Mp4Composer.Listener {
-                    override fun onProgress(progress: Double) {
+        try {
+            composer.trim(startTime, endTime)
+                    .listener(object : Mp4Composer.Listener {
+                        override fun onProgress(progress: Double) {
 
-                    }
+                        }
 
-                    override fun onCompleted() {
-                        activity.runOnUiThread(Runnable {
-                            result.success(null)
-                        })
-                    }
+                        override fun onCurrentWrittenVideoTime(timeUs: Long) {
 
-                    override fun onCanceled() {
-                        activity.runOnUiThread(Runnable {
-                            result.error("user_cancelled", "Cancelled by user", null)
-                        })
-                    }
+                        }
 
-                    override fun onFailed(exception: Exception?) {
-                        exception?.printStackTrace()
-                        activity.runOnUiThread(Runnable {
-                            result.error("video_trim_failed", exception?.localizedMessage, exception?.stackTrace)
-                        })
-                    }
+                        override fun onCompleted() {
+                            activity.runOnUiThread(Runnable {
+                                result.success(null)
+                            })
+                        }
 
-                }).start();
+                        override fun onCanceled() {
+                            activity.runOnUiThread(Runnable {
+                                result.error("user_cancelled", "Cancelled by user", null)
+                            })
+                        }
+
+                        override fun onFailed(exception: Exception) {
+                            exception.printStackTrace()
+                            activity.runOnUiThread(Runnable {
+                                result.error("video_trim_failed", exception.message, exception.stackTrace)
+                            })
+                        }
+
+                    }).start();
+        } catch (e: Exception) {
+            print("Error ====== ${e.message}")
+            e.printStackTrace()
+            activity.runOnUiThread(Runnable {
+                result.error("video_trim_failed", e.message, e.stackTrace)
+            })
+        }
     }
 }

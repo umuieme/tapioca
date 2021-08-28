@@ -22,12 +22,18 @@ class _VideoAppState extends State<VideoScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.file(File(path))
-      ..initialize().then((_) {
-        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-        setState(() {});
-        print("output video  ==== ${_controller.value.duration.inSeconds}");
-      });
+    initialize();
+  }
+
+  initialize() async {
+    try {
+      _controller = VideoPlayerController.file(File(path));
+      await _controller.initialize();
+      print("total duration -====== ${_controller.value.duration.inSeconds}");
+      setState(() {});
+    } catch (error) {
+      print(error);
+    }
   }
 
   @override
@@ -58,7 +64,7 @@ class _VideoAppState extends State<VideoScreen> {
 
   @override
   void dispose() {
-    super.dispose();
     _controller.dispose();
+    super.dispose();
   }
 }

@@ -55,6 +55,9 @@ class VideoGeneratorService(
                     override fun onProgress(progress: Double) {
                         println("onProgress = " + progress)
                     }
+                    override fun onCurrentWrittenVideoTime(timeUs: Long) {
+
+                    }
 
                     override fun onCompleted() {
                         activity.runOnUiThread(Runnable {

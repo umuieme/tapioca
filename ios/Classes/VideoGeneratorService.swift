@@ -107,20 +107,11 @@ public class VideoGeneratorService: VideoGeneratorServiceInterface {
           let imageOverlay = ImageOverlay(bitmap: bitmap.data, x: x, y: y)
           let datos: Data = imageOverlay.bitmap
           let image = UIImage(data: datos)
+        
           let imglayer = CALayer()
           imglayer.contents = image?.cgImage
-          guard let imageWidth: CGFloat = image?.size.width else {
-            result(FlutterError(code: "video_processing_failed",
-              message: "video processing is failed.",
-              details: nil))
-            return
-          }
-          guard let imageHeight: CGFloat = image?.size.height else {
-            result(FlutterError(code: "video_processing_failed",
-              message: "video processing is failed.",
-              details: nil))
-            return
-          }
+           let imageWidth: CGFloat = image!.size.width/2
+           let imageHeight: CGFloat = image!.size.height/2
           imglayer.frame = CGRect(x:CGFloat(imageOverlay.x.intValue), y: size.height - CGFloat(imageOverlay.y.intValue) - imageHeight, width: imageWidth, height: imageHeight)
           imglayer.opacity = 1
           filters.append(imglayer)
@@ -179,6 +170,8 @@ public class VideoGeneratorService: VideoGeneratorServiceInterface {
          }
          })
       }
+
+     
       private func imageWith(name: String, width: CGFloat, height: CGFloat, size: Int, color: UIColor) -> UIImage? {
         let frame = CGRect(x: 0, y: 0, width: width, height: CGFloat(size))
         let nameLabel = UILabel(frame: frame)
