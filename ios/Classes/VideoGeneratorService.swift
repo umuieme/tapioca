@@ -110,8 +110,13 @@ public class VideoGeneratorService: VideoGeneratorServiceInterface {
         
           let imglayer = CALayer()
           imglayer.contents = image?.cgImage
-           let imageWidth: CGFloat = image!.size.width
-           let imageHeight: CGFloat = image!.size.height
+           let imageWidth: CGFloat = image!.size.width/3
+           let imageHeight: CGFloat = image!.size.height/3
+                 print("=========>data");
+           print(imageWidth);
+           print(imageHeight);
+
+           print("Not implement filter name")
           imglayer.frame = CGRect(x:CGFloat(imageOverlay.x.intValue), y: size.height - CGFloat(imageOverlay.y.intValue) - imageHeight, width: imageWidth, height: imageHeight)
           imglayer.opacity = 1
           filters.append(imglayer)

@@ -140,7 +140,7 @@ class _TextScreenState extends State<TextScreen> {
     if (key == null) return null;
     RenderRepaintBoundary boundary =
         key.currentContext!.findRenderObject() as RenderRepaintBoundary;
-    final image = await boundary.toImage(pixelRatio: 3);
+    final image = await boundary.toImage(pixelRatio: 3.5);
     print("=======>${image.height}");
     print("=======>${image.width}");
     final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
@@ -230,11 +230,8 @@ class _TextScreenState extends State<TextScreen> {
     return outputPath;
   }
 
-  Widget buildImage(Uint8List? bytes) => bytes != null
-      ? Image.memory(
-          bytes,
-        )
-      : Container();
+  Widget buildImage(Uint8List? bytes) =>
+      bytes != null ? Image.memory(bytes, scale: 3) : Container();
 }
 
 class WidgetToImage extends StatefulWidget {
